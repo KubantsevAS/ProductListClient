@@ -1,32 +1,20 @@
-import { useState } from 'react';
-import viteLogo from '/vite.svg';
 import './App.scss';
+import { getProductById, getProducts } from './api';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const onClickHandler = async () => {
+    const answ = await getProducts();
+    console.log(answ);
+  };
+  const onClickHandler2 = async () => {
+    const answ = await getProductById(7);
+    console.log(answ);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          Logo
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <button onClick={onClickHandler}>Get All Products</button>
+      <button onClick={onClickHandler2}>Get Number 7 product</button>
     </>
   );
 }
