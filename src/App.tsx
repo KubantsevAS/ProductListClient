@@ -1,49 +1,30 @@
 import './App.scss';
 import { useEffect } from 'react';
-import { getProductById, getProducts } from './api';
-import {
-  setGlobalState,
-  useGlobalState,
-  useStoreState,
-  dispatch,
-} from './store/store';
-import { addToFavorite, removeFromFavorite } from './store/reducer';
+import { useStoreState, dispatch } from './store';
+import { addToFavorite, fetchProducts, removeFromFavorite } from './store';
+import { IShopArrayItem } from './types';
 
 function App() {
-  const [value, updateValue] = useGlobalState('productsList');
-
-  const withReducer = useStoreState('productsList');
-  const favors = useStoreState('favoriteList');
-
-  const thunkMe = async () => {
-    const answ = await getProducts();
-    setGlobalState('productsList', answ);
-  };
+  const productsList: IShopArrayItem[] = useStoreState('productsList');
+  const favoriteList: number[] = useStoreState('favoriteList');
 
   useEffect(() => {
-    thunkMe();
+    fetchProducts();
   }, []);
 
   const onClickHandler = async () => {
-    const answ = await getProducts();
-    console.log(withReducer);
-    console.log(favors);
+    console.log(productsList);
+    console.log(favoriteList);
   };
-  const onClickHandler2 = async () => {
-    const answ = await getProductById(7);
-    // console.log(answ);
-  };
-
   return (
     <>
       <button onClick={onClickHandler}>Get All Products</button>
-      <button onClick={onClickHandler2}>Get Number 7 Product</button>
-      {value.length > 1 && (
+      {productsList.length > 1 && (
         <div>
-          {value.map((elem) => (
+          {productsList.map((elem) => (
             <div key={elem.id}>
               <span>{elem.id}</span>
-              {!favors.includes(elem.id) ? (
+              {!favoriteList.includes(elem.id) ? (
                 <button
                   onClick={() => {
                     dispatch(addToFavorite(elem.id));
@@ -55,7 +36,6 @@ function App() {
                 <button
                   onClick={() => {
                     dispatch(removeFromFavorite(elem.id));
-                    console.log(withReducer, value);
                   }}
                 >
                   Dislike

@@ -1,10 +1,21 @@
-import { initialState } from './store';
+import { IAction, IInitialState } from '../../types';
 
-const ADD_TO_FAVORITE = 'ADD_TO_FAVORITE';
-const REMOVE_FROM_FAVORITE = 'REMOVE_FROM_FAVORITE';
+export const ADD_TO_FAVORITE = 'ADD_TO_FAVORITE';
+export const REMOVE_FROM_FAVORITE = 'REMOVE_FROM_FAVORITE';
+export const SET_PRODUCTS_LIST = 'SET_PRODUCTS_LIST';
+
+export const initialState: IInitialState = {
+  productsList: [],
+  favoriteList: [],
+};
 
 export const reducer = (state = initialState, action: IAction) => {
   switch (action.type) {
+    case SET_PRODUCTS_LIST:
+      return {
+        ...state,
+        productsList: action.payload,
+      };
     case ADD_TO_FAVORITE:
       return {
         ...state,
@@ -21,18 +32,3 @@ export const reducer = (state = initialState, action: IAction) => {
       return state;
   }
 };
-
-interface IAction {
-  type: string;
-  payload: number;
-}
-
-export const addToFavorite = (id: number): IAction => ({
-  type: ADD_TO_FAVORITE,
-  payload: id,
-});
-
-export const removeFromFavorite = (id: number): IAction => ({
-  type: REMOVE_FROM_FAVORITE,
-  payload: id,
-});
